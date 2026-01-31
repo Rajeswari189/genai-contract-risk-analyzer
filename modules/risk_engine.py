@@ -1,43 +1,42 @@
 risk_patterns = {
-    "Penalty Clause": ["penalty", "liquidated damages"],
+    "Penalty Clause": ["penalty", "liquidated damages", "interest", "late payment"],
     "Indemnity Clause": ["indemnify", "hold harmless"],
-    "Unilateral Termination": ["sole discretion", "terminate without notice"],
-    "Auto Renewal": ["automatically renew"],
-    "Non-Compete": ["non-compete", "restrict"],
-    "IP Transfer": ["intellectual property shall belong"],
-    "Arbitration Clause": ["arbitration", "jurisdiction"]
+    "Unilateral Termination": ["sole discretion", "without notice"],
+    "Auto Renewal": ["auto-renew", "automatically renew"],
+    "Non-Compete": ["non-compete", "not provide similar services", "restrict"],
+    "IP Transfer": ["intellectual property", "exclusive property"],
+    "Arbitration Clause": ["arbitration"],
+    "Jurisdiction Clause": ["jurisdiction", "courts of"],
+    "Limitation of Liability": ["liability shall not exceed"],
+    "Lock-in Period": ["minimum term", "lock-in"]
 }
 
 def analyze_clause(clause):
-    risk_score = 1
+    score = 1
     issues = []
 
     for category, keywords in risk_patterns.items():
         for word in keywords:
-            if word in clause.lower():
+            if word.lower() in clause.lower():
                 issues.append(category)
-                risk_score = 3
+                score += 1
 
-    if len(clause) > 700:
-        risk_score = 2
-
-    if risk_score == 1:
+    if score <= 2:
         level = "Low"
-    elif risk_score == 2:
+    elif score <= 4:
         level = "Medium"
     else:
         level = "High"
 
-    return level, issues
+    return level, issues, score
 
 
 def contract_risk_score(results):
-    score_map = {"Low": 1, "Medium": 2, "High": 3}
-    avg = sum([score_map[r["risk"]] for r in results]) / len(results)
+    avg = sum([r["numeric_score"] for r in results]) / len(results)
 
-    if avg < 1.5:
+    if avg < 2:
         return "Low"
-    elif avg < 2.3:
+    elif avg < 4:
         return "Medium"
     else:
         return "High"
