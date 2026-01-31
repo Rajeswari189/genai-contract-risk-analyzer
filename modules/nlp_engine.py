@@ -11,10 +11,4 @@ def detect_language(text):
 
 def extract_entities(text):
     doc = nlp(text)
-    entities = []
-    for ent in doc.ents:
-        entities.append({
-            "text": ent.text,
-            "label": ent.label_
-        })
-    return entities
+    return [(ent.text, ent.label_) for ent in doc.ents]
