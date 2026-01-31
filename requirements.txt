@@ -1,6 +1,7 @@
 streamlit
 openai
-spacy
+spacy==3.7.2
+numpy==1.26.4
 python-docx
 PyPDF2
 langdetect
