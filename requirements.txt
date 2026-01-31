@@ -1,0 +1,9 @@
+streamlit
+openai
+spacy
+python-docx
+PyPDF2
+langdetect
+reportlab
+pandas
+matplotlib
